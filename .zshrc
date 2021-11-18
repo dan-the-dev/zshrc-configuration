@@ -1,3 +1,6 @@
+# Plugins
+plugins(git wd docker zsh-autosuggestions zsh-syntax-highlighting)
+
 # Generic Aliases
 alias help='cat ~/.zshrc'
 
