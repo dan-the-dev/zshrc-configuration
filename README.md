@@ -9,7 +9,19 @@ Most of them are GIT commands aliases, including aliases for Conventional Commit
 
 ## How to use it
 
+### Use Boostrap Script
+
+1. Clone this repository
+2. Copy `boostrap.config.example` in `bootstrap.config` (command: `cp bootstrap.config.example bootstrap.config`) and configure your MAC APP STORE account in its variables
+3. Run `bootstrap.sh` bash script
+
+#### Coming next
+
+- Chance to config the tools to be installed
+
+### Simply use .zshrc file config
+
 If you want to use my .zshrc, feel free to do it; you have a couple of ways to do it, for example:
 
 1. Clone this repository in your ~ folder, then add the following line to your .zshrc: `source ~/zshrc-configuration/.zshrc`
-2. Just copy paste the aliases from this repo in your .zshrc
+2. Just copy paste the aliases or anything else you like from this repo in your .zshrc

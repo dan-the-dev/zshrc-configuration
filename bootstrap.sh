@@ -14,8 +14,9 @@ fi
 CURRDIR=`pwd`
 BREWINSTALLED=`which brew`
 XCODEINSTALLED=`which xcode-select`
-APPSTORE_USERNAME=''
-APPSTORE_PASSWORD=''
+
+#Load configuration
+. $CURRDIR/bootstrap.config
 
 # Install Xcode
 if [[ ${XCODEINSTALLED} == "" ]]; then
@@ -29,11 +30,12 @@ if [[ ${BREWINSTALLED} == "" ]]; then
   ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 fi
 
-#Required App
+#Installer App
+brew install wget
 brew tap homebrew/cask
 brew install mas-cli/tap/mas
 
-#List your preferred applications
+#App installed via brew
 brew install git
 brew install docker
 brew install httpie
@@ -50,7 +52,7 @@ brew install --cask notion
 brew install --cask spotify
 brew install --cask zoom
 
-#Install from Mac App Store via Mas
+#App installed from Mac App Store via Mas
 mas signin $APPSTORE_USERNAME $APPSTORE_PASSWORD
 
 mas install 419332741 #XMenu
@@ -61,9 +63,11 @@ mas install 408981434 #iMovie
 mas signout
 
 #Install iTerm2
-wget https://iterm2.com/downloads/stable/iTerm2-3_4_13.zip
-unzip -X iTerm2-3_4_13.zip
-mv iTerm.app ~/Applications/.
+if [ -f ~/Applications/iTerm.app ]; then
+  wget https://iterm2.com/downloads/stable/iTerm2-3_4_13.zip
+  unzip -X iTerm2-3_4_13.zip
+  mv iTerm.app ~/Applications/.
+fi
 
 #Install Oh My Zsh
 if [ ! -d ~/.oh-my-zsh ]; then
@@ -73,11 +77,10 @@ if [ ! -d ~/.oh-my-zsh ]; then
 fi
 
 #Install powerlevel10k
-git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
-echo 'ZSH_THEME="powerlevel10k/powerlevel10k"' > ~/.zshrc
+git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/.oh-my-zsh/custom/themes/powerlevel10k
 
 #Create bootstrapped file to track execution
 touch ~/.bootstrapped.txt
 
 #Done, opening iTerm to trigger powerlevel10k config
-open -n ./iTerm.app 
+open -n ~/Applications/iTerm.app
