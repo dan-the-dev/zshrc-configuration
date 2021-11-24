@@ -48,6 +48,7 @@ brew install --cask cheatsheet
 brew install --cask google-chrome
 brew install --cask notion
 brew install --cask spotify
+brew install --cask zoom
 
 #Install from Mac App Store via Mas
 mas signin $APPSTORE_USERNAME $APPSTORE_PASSWORD
