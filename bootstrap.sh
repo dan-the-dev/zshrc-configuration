@@ -51,6 +51,9 @@ brew install --cask google-chrome
 brew install --cask notion
 brew install --cask spotify
 brew install --cask zoom
+brew install --cask steam
+brew install --cask discord
+brew install --cask audacity
 
 #App installed from Mac App Store via Mas
 mas signin $APPSTORE_USERNAME $APPSTORE_PASSWORD
