@@ -70,9 +70,10 @@ mas signout
 
 #Install iTerm2
 if [ ! -f ~/Applications/iTerm.app ]; then
-  wget https://iterm2.com/downloads/stable/iTerm2-3_4_13.zip
-  unzip -X iTerm2-3_4_13.zip
+  wget https://iterm2.com/downloads/stable/iTerm2-3_4_15.zip
+  unzip -X iTerm2-3_4_15.zip
   mv iTerm.app /Applications/.
+  rm -f iTerm2-3_4_15.zip
 fi
 
 #Install Oh My Zsh
@@ -83,8 +84,9 @@ if [ ! -d ~/.oh-my-zsh ]; then
 fi
 
 #Install powerlevel10k
-if [ ! -d ~/.oh-my-zsh/custom/themes/powerlevel10k ]; then
-  git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/.oh-my-zsh/custom/themes/powerlevel10k
+if [ ! -d ~/powerlevel10k ]; then
+  git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/powerlevel10k
+  echo 'source ~/powerlevel10k/powerlevel10k.zsh-theme' >>~/.zshrc
 fi
 
 #Create bootstrapped file to track execution
