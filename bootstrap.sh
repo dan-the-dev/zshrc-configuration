@@ -28,12 +28,15 @@ fi
 if [[ ${BREWINSTALLED} == "" ]]; then
   echo "Installing Brew"
   ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+  echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.zprofile
+  eval "$(/opt/homebrew/bin/brew shellenv)"
 fi
 
 #Installer App
 brew install wget
 brew tap homebrew/cask
 brew install mas-cli/tap/mas
+sudo softwareupdate --install-rosetta
 
 #App installed via brew
 brew install git
@@ -66,10 +69,10 @@ mas install 408981434 #iMovie
 mas signout
 
 #Install iTerm2
-if [ -f ~/Applications/iTerm.app ]; then
+if [ ! -f ~/Applications/iTerm.app ]; then
   wget https://iterm2.com/downloads/stable/iTerm2-3_4_13.zip
   unzip -X iTerm2-3_4_13.zip
-  mv iTerm.app ~/Applications/.
+  mv iTerm.app /Applications/.
 fi
 
 #Install Oh My Zsh
@@ -80,10 +83,12 @@ if [ ! -d ~/.oh-my-zsh ]; then
 fi
 
 #Install powerlevel10k
-git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/.oh-my-zsh/custom/themes/powerlevel10k
+if [ ! -d ~/.oh-my-zsh/custom/themes/powerlevel10k ]; then
+  git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/.oh-my-zsh/custom/themes/powerlevel10k
+fi
 
 #Create bootstrapped file to track execution
 touch ~/.bootstrapped.txt
 
 #Done, opening iTerm to trigger powerlevel10k config
-open -n ~/Applications/iTerm.app
+open -n /Applications/iTerm.app
