@@ -42,6 +42,8 @@ sudo softwareupdate --install-rosetta
 brew install git
 brew install docker
 brew install httpie
+brew install php
+brew install composer
 brew install --cask slack
 brew install --cask postman
 brew install --cask phpstorm
