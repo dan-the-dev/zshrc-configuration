@@ -115,6 +115,8 @@ alias gaaa='git add . -A'
 alias gaaap='git add . -A -p'
 alias gp='git pull'
 alias gps='git push'
+alias gpsf='git push --force'
+alias gpst='git push --tags'
 alias gcm='git commit -m'
 alias gcme='git commit --allow-empty -m'
 alias gb='git branch'
@@ -123,6 +125,7 @@ alias gm='git merge'
 alias grh='git reset HEAD'
 alias grhh='git reset HEAD --hard'
 alias grlst='git reset --soft HEAD~1'
+alias gt='git tag'
 
 function current_branch() {
   ref=$(git symbolic-ref HEAD 2> /dev/null) || return
