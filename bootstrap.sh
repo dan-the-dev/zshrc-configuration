@@ -44,6 +44,7 @@ brew install docker
 brew install httpie
 brew install php
 brew install composer
+brew install node
 brew install --cask slack
 brew install --cask postman
 brew install --cask phpstorm
@@ -55,10 +56,13 @@ brew install --cask cheatsheet
 brew install --cask google-chrome
 brew install --cask notion
 brew install --cask spotify
-brew install --cask zoom
-brew install --cask steam
-brew install --cask discord
+# brew install --cask zoom
+# brew install --cask steam
+# brew install --cask discord
 brew install --cask audacity
+
+#App installed via npm
+npm install --global yarn
 
 #App installed from Mac App Store via Mas
 mas signin $APPSTORE_USERNAME $APPSTORE_PASSWORD
@@ -69,6 +73,9 @@ mas install 1017470484 #Next Meeting
 mas install 408981434 #iMovie
 
 mas signout
+
+#App installed via curl
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
 
 #Install iTerm2
 if [ ! -f ~/Applications/iTerm.app ]; then
