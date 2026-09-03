@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -euo pipefail
 
 # Check if already bootstrapped
 if [ -f ~/.bootstrapped.txt ]; then
@@ -12,94 +13,87 @@ fi
 
 # Setup variables
 CURRDIR=`pwd`
-BREWINSTALLED=`which brew`
-XCODEINSTALLED=`which xcode-select`
-
-#Load configuration
-. $CURRDIR/bootstrap.config
-
-# Install Xcode
-if [[ ${XCODEINSTALLED} == "" ]]; then
-  echo "Installing Xcode"
-  xcode-select --install
-fi
+BREWINSTALLED=`which brew || true`
 
 # Install Brew
 if [[ ${BREWINSTALLED} == "" ]]; then
   echo "Installing Brew"
-  ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
   echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.zprofile
   eval "$(/opt/homebrew/bin/brew shellenv)"
 fi
 
 #Installer App
 brew install wget
-brew tap homebrew/cask
-brew install mas-cli/tap/mas
-sudo softwareupdate --install-rosetta
+
+# Rosetta is only needed on Apple Silicon
+if [[ $(uname -m) == "arm64" ]]; then
+  softwareupdate --install-rosetta --agree-to-license
+fi
 
 #App installed via brew
 brew install git
-brew install docker
 brew install httpie
-brew install php
-brew install composer
+brew install jq
 brew install node
-brew install --cask slack
-brew install --cask postman
-brew install --cask phpstorm
-brew install --cask intellij-idea
+brew install starship
+brew install neovim
+brew install ripgrep
+brew install bat
+brew install eza
+brew install zoxide
+brew install fzf
+brew install git-delta
+brew install lazygit
+brew install git-lfs
+brew install herdr
+brew install fd
+brew install tlrc
+brew install glow
+brew install btop
+brew install --cask bruno
 brew install --cask visual-studio-code
-brew install --cask background-music
-brew install --cask muzzle
-brew install --cask cheatsheet
 brew install --cask google-chrome
+brew install --cask brave-browser
 brew install --cask notion
 brew install --cask spotify
-# brew install --cask zoom
-# brew install --cask steam
-# brew install --cask discord
-brew install --cask audacity
+brew install --cask ghostty
+brew install --cask dbeaver-community
+brew install --cask rectangle
+
+#Git global defaults
+git config --global init.defaultBranch main
+git config --global core.editor nvim
+git config --global core.pager delta
+git config --global interactive.diffFilter "delta --color-only"
+git config --global delta.navigate true
+git lfs install
 
 #App installed via npm
 npm install --global yarn
 
-#App installed from Mac App Store via Mas
-mas signin $APPSTORE_USERNAME $APPSTORE_PASSWORD
-
-mas install 419332741 #XMenu
-mas install 553245401 #Friendly Streaming Browser
-mas install 1017470484 #Next Meeting
-mas install 408981434 #iMovie
-
-mas signout
+#Coding agents
+npm install --global @anthropic-ai/claude-code
+brew install opencode
 
 #App installed via curl
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
 
-#Install iTerm2
-if [ ! -f ~/Applications/iTerm.app ]; then
-  wget https://iterm2.com/downloads/stable/iTerm2-3_4_15.zip
-  unzip -X iTerm2-3_4_15.zip
-  mv iTerm.app /Applications/.
-  rm -f iTerm2-3_4_15.zip
+#Install zinit (zsh plugin manager)
+ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
+if [ ! -d "$ZINIT_HOME" ]; then
+  mkdir -p "$(dirname "$ZINIT_HOME")"
+  git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
 fi
 
-#Install Oh My Zsh
-if [ ! -d ~/.oh-my-zsh ]; then
-    sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
-    rm ~/.zshrc
-    cat $CURRDIR/.zshrc > ~/.zshrc
+#Install this repo's .zshrc, backing up any existing one
+if [ -f ~/.zshrc ]; then
+  cp ~/.zshrc ~/.zshrc.bak.$(date +%Y%m%d%H%M%S)
 fi
-
-#Install powerlevel10k
-if [ ! -d ~/powerlevel10k ]; then
-  git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/powerlevel10k
-  echo 'source ~/powerlevel10k/powerlevel10k.zsh-theme' >>~/.zshrc
-fi
+cat $CURRDIR/.zshrc > ~/.zshrc
 
 #Create bootstrapped file to track execution
 touch ~/.bootstrapped.txt
 
-#Done, opening iTerm to trigger powerlevel10k config
-open -n /Applications/iTerm.app
+#Done, opening Ghostty to finish the setup
+open -n -a Ghostty || true

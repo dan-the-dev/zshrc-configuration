@@ -1,27 +1,27 @@
 # zshrc-configuration
 
-My personal .zshrc configuration
+My personal Mac setup: shell config plus a bootstrap script to get a new machine (personal or work, same script for both) ready in one run.
 
 ## What is this
 
-In this repo, you can find a .zshrc example, containing the aliases and function I configure on my own and use everyday.
-Most of them are GIT commands aliases, including aliases for Conventional Commits, but not only.
+- `.zshrc`: my zsh config — [zinit](https://github.com/zdharma-continuum/zinit) as plugin manager, [Starship](https://starship.rs) as prompt, plus a set of Git aliases and functions I use every day, including shortcuts for [Conventional Commits](https://gist.github.com/qoomon/5dfcdf8eec66a051ecd85625518cfd13).
+- `bootstrap.sh`: installs Xcode CLT, Homebrew, [Ghostty](https://ghostty.org) as terminal, Starship, a handful of dev/brew apps, [Claude Code](https://claude.com/claude-code) and [opencode](https://opencode.ai) as coding agents, then installs this repo's `.zshrc` as `~/.zshrc`.
 
 ## How to use it
 
-### Use Boostrap Script
+### Use the bootstrap script
 
 1. Clone this repository
-2. Copy `boostrap.config.example` in `bootstrap.config` (command: `cp bootstrap.config.example bootstrap.config`) and configure your MAC APP STORE account in its variables
-3. Run `bootstrap.sh` bash script
+2. If you use the Mac App Store apps in the script (`mas install ...`), make sure you're already signed in to the Mac App Store app first — `mas` can no longer sign in on its own
+3. Run `bootstrap.sh`
 
-#### Coming next
+The script backs up any existing `~/.zshrc` (as `~/.zshrc.bak.<timestamp>`) before installing this repo's version.
 
-- Chance to config the tools to be installed
+### Simply use the .zshrc file config
 
-### Simply use .zshrc file config
+If you want to use my `.zshrc` on its own, feel free to. A couple of ways to do it:
 
-If you want to use my .zshrc, feel free to do it; you have a couple of ways to do it, for example:
+1. Clone this repository in your `~` folder, then add the following line to your `.zshrc`: `source ~/zshrc-configuration/.zshrc`
+2. Just copy paste the aliases or anything else you like from this repo into your own `.zshrc`
 
-1. Clone this repository in your ~ folder, then add the following line to your .zshrc: `source ~/zshrc-configuration/.zshrc`
-2. Just copy paste the aliases or anything else you like from this repo in your .zshrc
+Either way, `.zshrc` bootstraps zinit itself on first run (it clones it if missing), but you still need Starship installed separately: `brew install starship`.
