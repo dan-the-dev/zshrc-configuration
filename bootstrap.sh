@@ -47,10 +47,12 @@ brew install git-delta
 brew install lazygit
 brew install git-lfs
 brew install herdr
+herdr --version || echo "herdr installed but --version failed; run 'herdr' manually to start it."
 brew install fd
 brew install tlrc
 brew install glow
 brew install btop
+brew install fresh-editor
 brew install --cask bruno
 brew install --cask visual-studio-code
 brew install --cask google-chrome
@@ -93,8 +95,48 @@ if [ -f ~/.zshrc ]; then
 fi
 cat $CURRDIR/.zshrc > ~/.zshrc
 
+#Ghostty starter config, backing up any existing one
+mkdir -p ~/.config/ghostty
+if [ -f ~/.config/ghostty/config ]; then
+  cp ~/.config/ghostty/config ~/.config/ghostty/config.bak.$(date +%Y%m%d%H%M%S)
+fi
+cat > ~/.config/ghostty/config << 'EOF'
+font-size = 14
+theme = TokyoNight
+window-padding-x = 10
+window-padding-y = 10
+cursor-style = block
+shell-integration = zsh
+macos-titlebar-style = tabs
+EOF
+
+#Fresh starter config, backing up any existing one
+mkdir -p ~/.config/fresh
+if [ -f ~/.config/fresh/config.json ]; then
+  cp ~/.config/fresh/config.json ~/.config/fresh/config.json.bak.$(date +%Y%m%d%H%M%S)
+fi
+cat > ~/.config/fresh/config.json << 'EOF'
+{
+  // theme kept consistent with the Ghostty config above
+  "theme": "tokyo-night",
+  "check_for_updates": false
+}
+EOF
+
 #Create bootstrapped file to track execution
 touch ~/.bootstrapped.txt
+
+cat << 'EOF'
+
+Bootstrap complete. A few things still need a manual step:
+- Rectangle: grant Accessibility permission on first launch (System Settings > Privacy & Security > Accessibility) -- macOS blocks scripting this
+- DisplayLink: grant Screen Recording permission on first launch (System Settings > Privacy & Security > Screen Recording) -- same reason
+- Ghostty theme: verify "TokyoNight" is still the exact bundled name via `ghostty +list-themes`, adjust ~/.config/ghostty/config if not
+- Fresh theme: verify the "tokyo-night" key matches Fresh's actual theme slug, adjust ~/.config/fresh/config.json if not
+- This repo's AGENTS.md is not auto-installed anywhere -- copy or symlink it yourself to ~/.config/opencode/AGENTS.md and/or reference it from ~/.claude/CLAUDE.md (e.g. `@~/projects/zshrc-configuration/AGENTS.md`) if/when you want agents to see it
+- Optional: try Headroom manually later (`pip install "headroom-ai[all]"`, `headroom wrap claude`) on a low-stakes project before deciding whether it's worth scripting in
+
+EOF
 
 #Done, opening Ghostty to finish the setup
 open -n -a Ghostty || true
