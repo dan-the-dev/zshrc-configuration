@@ -48,10 +48,12 @@ brew install git-delta
 brew install lazygit
 brew install git-lfs
 brew install herdr
+herdr --version || echo "herdr installed but --version failed; run 'herdr' manually to start it."
 brew install fd
 brew install tlrc
 brew install glow
 brew install btop
+brew install fresh-editor
 
 #Git global defaults
 git config --global init.defaultBranch main
@@ -84,6 +86,19 @@ if [ -f ~/.zshrc ]; then
 fi
 cat $CURRDIR/.zshrc > ~/.zshrc
 
+#Fresh starter config, backing up any existing one (Fresh is terminal-only, so it applies here too)
+mkdir -p ~/.config/fresh
+if [ -f ~/.config/fresh/config.json ]; then
+  cp ~/.config/fresh/config.json ~/.config/fresh/config.json.bak.$(date +%Y%m%d%H%M%S)
+fi
+cat > ~/.config/fresh/config.json << 'EOF'
+{
+  // theme kept consistent with the macOS bootstrap's Ghostty config
+  "theme": "tokyo-night",
+  "check_for_updates": false
+}
+EOF
+
 #Make zsh the login shell (Ubuntu defaults to bash)
 if [ "$(basename "$SHELL")" != "zsh" ]; then
   sudo chsh -s "$(command -v zsh)" "$(whoami)"
@@ -94,3 +109,4 @@ fi
 touch ~/.bootstrapped.txt
 
 echo "Bootstrap completato. Apri una nuova sessione (o esegui 'exec zsh') per usare la shell configurata."
+echo "Nota: AGENTS.md non viene copiato automaticamente da nessuna parte -- vedi README.md se vuoi collegarlo a opencode o Claude Code anche su questa macchina."
