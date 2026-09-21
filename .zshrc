@@ -8,10 +8,13 @@ fi
 
 source "${ZINIT_HOME}/zinit.zsh"
 
-# Plugins (git/docker/wd reuse the oh-my-zsh plugins without the full framework)
+# Plugins (git/docker reuse the oh-my-zsh plugins without the full framework;
+# wd is multi-file (wd.plugin.zsh + wd.sh + _wd), so it's loaded from its
+# upstream repo via `light` instead of a single-file OMZP snippet, which only
+# fetches the entry script and breaks without svn for the full directory)
 zinit snippet OMZP::git
 zinit snippet OMZP::docker
-zinit snippet OMZP::wd
+zinit light mfaerevaag/wd
 
 zinit light zsh-users/zsh-autosuggestions
 
