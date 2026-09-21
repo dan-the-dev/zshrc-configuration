@@ -63,8 +63,18 @@ setopt SHARE_HISTORY
 autoload -Uz up-line-or-beginning-search down-line-or-beginning-search
 zle -N up-line-or-beginning-search
 zle -N down-line-or-beginning-search
-bindkey "${terminfo[kcuu1]}" up-line-or-beginning-search
-bindkey "${terminfo[kcud1]}" down-line-or-beginning-search
+# Bind via terminfo when available, but also bind the literal escape
+# sequences directly: terminfo needs `zmodload zsh/terminfo` and a matching
+# terminfo db entry for $TERM (e.g. Ghostty's xterm-ghostty may be missing
+# on the system), silently leaving arrows on their emacs-mode default
+# (plain history scroll) if that lookup comes back empty.
+zmodload -i zsh/terminfo
+[[ -n "${terminfo[kcuu1]}" ]] && bindkey "${terminfo[kcuu1]}" up-line-or-beginning-search
+[[ -n "${terminfo[kcud1]}" ]] && bindkey "${terminfo[kcud1]}" down-line-or-beginning-search
+bindkey '^[[A' up-line-or-beginning-search
+bindkey '^[[B' down-line-or-beginning-search
+bindkey '^[OA' up-line-or-beginning-search
+bindkey '^[OB' down-line-or-beginning-search
 
 # Generic Aliases
 alias help='cat ~/.zshrc'
