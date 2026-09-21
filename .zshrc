@@ -58,6 +58,14 @@ setopt APPEND_HISTORY
 setopt INC_APPEND_HISTORY
 setopt SHARE_HISTORY
 
+# Prefix history search: type a prefix (e.g. "p"), then Up/Down cycles only
+# through history entries starting with it, instead of the whole history.
+autoload -Uz up-line-or-beginning-search down-line-or-beginning-search
+zle -N up-line-or-beginning-search
+zle -N down-line-or-beginning-search
+bindkey "${terminfo[kcuu1]}" up-line-or-beginning-search
+bindkey "${terminfo[kcud1]}" down-line-or-beginning-search
+
 # Generic Aliases
 alias help='cat ~/.zshrc'
 alias vim='nvim'
