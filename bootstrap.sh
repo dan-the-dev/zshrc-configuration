@@ -63,6 +63,7 @@ brew install --cask ghostty
 brew install --cask dbeaver-community
 brew install --cask rectangle
 brew install --cask displaylink
+brew install --cask dockdoor
 
 #Git global defaults
 git config --global init.defaultBranch main
